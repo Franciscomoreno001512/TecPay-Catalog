@@ -1,0 +1,190 @@
+{
+  "info": {
+    "name": "TecPay Catalog API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5200/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["var json = pm.response.json();", "if(json.data && json.data.token) { pm.collectionVariables.set('token', json.data.token); }"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"TecPay2025!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          },
+          "response": [
+            {
+              "name": "Login exitoso",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"expiration\": \"2026-05-14T19:00:00Z\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "5" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "categoryId", "value": "", "disabled": true },
+                { "key": "sortBy", "value": "id", "disabled": true },
+                { "key": "sortDirection", "value": "asc", "disabled": true }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Lista paginada",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Success\",\n  \"data\": {\n    \"items\": [{\"id\":1,\"name\":\"Laptop HP Pavilion\",\"sku\":\"ELEC-001\",\"price\":12999.99,\"stock\":25,\"categoryName\":\"Electrónica\"}],\n    \"totalCount\": 5,\n    \"page\": 1,\n    \"pageSize\": 10,\n    \"totalPages\": 1\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Product By Id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/products/1", "host": ["{{baseUrl}}"], "path": ["products", "1"] }
+          },
+          "response": [
+            {
+              "name": "Producto encontrado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"data\": {\"id\":1,\"name\":\"Laptop HP Pavilion\",\"sku\":\"ELEC-001\",\"price\":12999.99}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Audifonos Bluetooth\",\n  \"description\": \"Audifonos inalambricos con cancelacion de ruido\",\n  \"price\": 599.99,\n  \"stock\": 40,\n  \"sku\": \"ELEC-004\",\n  \"categoryId\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/products", "host": ["{{baseUrl}}"], "path": ["products"] }
+          },
+          "response": [
+            {
+              "name": "Producto creado",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Product created.\",\n  \"data\": {\"id\":7,\"name\":\"Audifonos Bluetooth\",\"sku\":\"ELEC-004\",\"price\":599.99}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Laptop HP Pavilion 15\",\n  \"description\": \"Laptop 15.6 pulgadas 16GB RAM 512GB SSD\",\n  \"price\": 14999.99,\n  \"stock\": 20,\n  \"sku\": \"ELEC-001\",\n  \"isActive\": true,\n  \"categoryId\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/products/1", "host": ["{{baseUrl}}"], "path": ["products", "1"] }
+          },
+          "response": [
+            {
+              "name": "Producto actualizado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Product updated.\",\n  \"data\": {\"id\":1,\"name\":\"Laptop HP Pavilion 15\",\"price\":14999.99}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/products/6", "host": ["{{baseUrl}}"], "path": ["products", "6"] }
+          },
+          "response": [
+            {
+              "name": "Producto eliminado",
+              "status": "No Content",
+              "code": 204,
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          },
+          "response": [
+            {
+              "name": "Lista de categorias",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"data\": [{\"id\":1,\"name\":\"Electrónica\"},{\"id\":2,\"name\":\"Ropa\"},{\"id\":3,\"name\":\"Alimentos\"},{\"id\":4,\"name\":\"Hogar\"}]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Deportes\",\n  \"description\": \"Articulos deportivos\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

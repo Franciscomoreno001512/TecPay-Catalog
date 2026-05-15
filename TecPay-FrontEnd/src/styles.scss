@@ -1,0 +1,62 @@
+@use '@angular/material' as mat;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: 'Inter', 'Roboto', "Helvetica Neue", sans-serif;
+  background: #f0f2f5; color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { box-sizing: border-box; }
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f0f2f5; }
+::-webkit-scrollbar-thumb { background: #c0c0c0; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #999; }
+
+.cdk-overlay-pane .mat-mdc-select-panel,
+.mat-mdc-select-panel,
+.custom-select-panel {
+  background: #fff !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  padding: 6px !important;
+}
+.mat-mdc-option {
+  background: #fff !important;
+  border-radius: 10px !important;
+  margin: 2px 0 !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  color: #333 !important;
+  transition: all 0.15s ease !important;
+}
+.mat-mdc-option:hover {
+  background: #f5f6fa !important;
+}
+.mat-mdc-option.mdc-list-item--selected {
+  background: linear-gradient(135deg, #fce4ec, #fce4ec) !important;
+  color: #c23152 !important;
+  font-weight: 600 !important;
+}
+.mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
+  color: #c23152 !important;
+}
+.mat-mdc-option .mat-pseudo-checkbox-checked {
+  background: #e94560 !important;
+  border-color: #e94560 !important;
+}
+
+.confirm-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 20px !important;
+  overflow: hidden;
+}
